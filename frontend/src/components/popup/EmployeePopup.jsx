@@ -1,7 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { closeEmployeePopup } from "../../features/popup/popup.slice";
+import { useState } from "react";
 
 const EmployeePopup = () => {
+  const [formDetails, setFormDetails] = useState({
+    profileURL: "",
+    name: "",
+    email: "",
+    bio: "",
+    isHighlight: false,
+  });
   const popup = useSelector((state) => state.popup.employeePopup);
   const dispatch = useDispatch();
 
@@ -17,20 +25,13 @@ const EmployeePopup = () => {
       >
         <legend className="fieldset-legend">Employee Details</legend>
 
-        <div
-          className="avatar cursor-pointer flex justify-center"
-          title="Change your avatar"
-        >
-          <div className="ring-primary ring-offset-base-100 w-24 rounded-full ring-2 ring-offset-2">
-            <img
-              src="https://img.daisyui.com/images/profile/demo/spiderperson@192.webp"
-              alt="avatar"
-            />
-          </div>
-
-          {/* Hidden File Input */}
-          <input type="file" accept="image/*" hidden />
-        </div>
+        <label className="label">Profile Url</label>
+        <input
+          name="profileURL"
+          type="text"
+          className="input"
+          placeholder="Profile Url"
+        />
 
         <label className="label">Name</label>
         <input type="text" className="input" placeholder="Name" />

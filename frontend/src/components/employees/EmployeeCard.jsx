@@ -10,12 +10,12 @@ import {
 } from "../../features/popup/popup.slice";
 
 const EmployeeCard = ({ employee }) => {
-  const { name, email, profilePic, bio } = employee;
+  const { name, email, profileURL, bio } = employee;
   const dispatch = useDispatch();
   return (
     <li className="list-row">
       <div>
-        <img className="size-10 rounded-box" src={profilePic} />
+        <img className="size-10 rounded-box" src={profileURL} />
       </div>
       <div>
         <div>{name}</div>

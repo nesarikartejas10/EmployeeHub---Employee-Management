@@ -8,11 +8,13 @@ export const getEmployees = createAsyncThunk(
       const response = await api.get("employee");
       return response.data;
     } catch (error) {
-      if (error.response && error.response.data?.message) {
-        return rejectWithValue(error.response.data.message);
+      if (error.response) {
+        return rejectWithValue(
+          error.response.statusText || "Failed to fetch employees",
+        );
       }
 
-      return rejectWithValue("Server is not responding. Please try again.");
+      return rejectWithValue("Network error. Please check your connection.");
     }
   },
 );
