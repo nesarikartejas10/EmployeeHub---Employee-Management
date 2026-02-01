@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { closeEmployeePopup } from "../../features/popup/popup.slice";
 import { useState } from "react";
+import { postEmployees } from "../../features/employee/employee.thunk";
 
 const EmployeePopup = () => {
   const [formDetails, setFormDetails] = useState({
@@ -10,8 +11,29 @@ const EmployeePopup = () => {
     bio: "",
     isHighlight: false,
   });
+
   const popup = useSelector((state) => state.popup.employeePopup);
   const dispatch = useDispatch();
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormDetails((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleSubmit = () => {
+    dispatch(postEmployees(formDetails));
+    setFormDetails({
+      profileURL: "",
+      name: "",
+      email: "",
+      bio: "",
+      isHighlight: false,
+    });
+
+    dispatch(closeEmployeePopup());
+  };
 
   if (!popup) return null;
   return (
@@ -25,24 +47,48 @@ const EmployeePopup = () => {
       >
         <legend className="fieldset-legend">Employee Details</legend>
 
-        <label className="label">Profile Url</label>
+        <label className="label">Profile URL</label>
         <input
           name="profileURL"
           type="text"
           className="input"
           placeholder="Profile Url"
+          value={formDetails.profileURL}
+          onChange={handleInputChange}
         />
 
         <label className="label">Name</label>
-        <input type="text" className="input" placeholder="Name" />
+        <input
+          type="text"
+          className="input"
+          name="name"
+          placeholder="Name"
+          value={formDetails.name}
+          onChange={handleInputChange}
+        />
 
         <label className="label">Email</label>
-        <input type="email" className="input" placeholder="Email" />
+        <input
+          type="email"
+          className="input"
+          placeholder="Email"
+          name="email"
+          value={formDetails.email}
+          onChange={handleInputChange}
+        />
 
         <label className="label">Bio</label>
-        <textarea className="textarea h-24" placeholder="Bio"></textarea>
+        <textarea
+          className="textarea h-24"
+          placeholder="Bio"
+          name="bio"
+          value={formDetails.bio}
+          onChange={handleInputChange}
+        ></textarea>
 
-        <button className="btn btn-neutral mt-4">Login</button>
+        <button onClick={handleSubmit} className="btn btn-neutral mt-4">
+          Login
+        </button>
       </fieldset>
     </section>
   );

@@ -19,9 +19,7 @@ const EmployeeCard = ({ employee }) => {
       </div>
       <div>
         <div>{name}</div>
-        <div className="text-xs uppercase font-semibold opacity-60">
-          {email}
-        </div>
+        <div className="text-xs font-semibold opacity-60">{email}</div>
       </div>
       <p className="list-col-wrap text-xs">{bio}</p>
       <button

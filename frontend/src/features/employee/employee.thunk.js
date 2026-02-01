@@ -18,3 +18,20 @@ export const getEmployees = createAsyncThunk(
     }
   },
 );
+
+export const postEmployees = createAsyncThunk(
+  "employee/postEmployees",
+  async (details, { rejectWithValue }) => {
+    try {
+      const response = await api.post("employee", details);
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue(
+          error.response.statusText || "Failed to create employee",
+        );
+      }
+      return rejectWithValue("Network error. Please check your connection.");
+    }
+  },
+);
