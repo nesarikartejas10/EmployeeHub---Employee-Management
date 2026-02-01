@@ -1,11 +1,13 @@
 import { useSelector, useDispatch } from "react-redux";
 import { closeDeletePopup } from "../../features/popup/popup.slice";
+import { deleteEmployees } from "../../features/employee/employee.thunk";
 
 const DeletePopup = () => {
   const popup = useSelector((state) => state.popup.deletePopup);
   const dispatch = useDispatch();
 
   const handleDeleteEmployee = () => {
+    dispatch(deleteEmployees(popup));
     dispatch(closeDeletePopup());
   };
 

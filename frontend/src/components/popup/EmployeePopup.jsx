@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { closeEmployeePopup } from "../../features/popup/popup.slice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { postEmployees } from "../../features/employee/employee.thunk";
 
 const EmployeePopup = () => {
@@ -13,6 +13,7 @@ const EmployeePopup = () => {
   });
 
   const popup = useSelector((state) => state.popup.employeePopup);
+  console.log(popup);
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
@@ -24,13 +25,6 @@ const EmployeePopup = () => {
 
   const handleSubmit = () => {
     dispatch(postEmployees(formDetails));
-    setFormDetails({
-      profileURL: "",
-      name: "",
-      email: "",
-      bio: "",
-      isHighlight: false,
-    });
 
     dispatch(closeEmployeePopup());
   };

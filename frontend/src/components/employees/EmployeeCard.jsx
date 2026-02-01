@@ -10,7 +10,7 @@ import {
 } from "../../features/popup/popup.slice";
 
 const EmployeeCard = ({ employee }) => {
-  const { name, email, profileURL, bio } = employee;
+  const { id, name, email, profileURL, bio } = employee;
   const dispatch = useDispatch();
   return (
     <li className="list-row">
@@ -24,13 +24,13 @@ const EmployeeCard = ({ employee }) => {
       <p className="list-col-wrap text-xs">{bio}</p>
       <button
         className="btn btn-square btn-ghost"
-        onClick={() => dispatch(openEmployeePopup())}
+        onClick={() => dispatch(openEmployeePopup(employee))}
       >
         <MdOutlineModeEdit size={20} />
       </button>
       <button
         className="btn btn-square btn-ghost"
-        onClick={() => dispatch(openDeletePopup())}
+        onClick={() => dispatch(openDeletePopup(id))}
       >
         <MdOutlineDeleteOutline size={20} />
       </button>

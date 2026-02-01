@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getEmployees, postEmployees } from "./employee.thunk";
+import { deleteEmployees, getEmployees, postEmployees } from "./employee.thunk";
 
 const initialState = {
   employees: [],
@@ -39,7 +39,26 @@ const employeeSlice = createSlice({
       state.employees = [...state.employees, action.payload];
     });
 
-    builder.addCase(postEmployees.rejected, (state, _) => {
+    builder.addCase(postEmployees.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || action.error.message;
+    });
+
+    //delete employees
+    builder.addCase(deleteEmployees.pending, (state, action) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(deleteEmployees.fulfilled, (state, action) => {
+      state.loading = false;
+
+      state.employees = state.employees.filter(
+        (employee) => employee.id !== action.payload.id,
+      );
+    });
+
+    builder.addCase(deleteEmployees.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || action.error.message;
     });
