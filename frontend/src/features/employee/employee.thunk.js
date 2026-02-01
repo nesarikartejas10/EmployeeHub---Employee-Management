@@ -38,14 +38,33 @@ export const postEmployees = createAsyncThunk(
 
 export const deleteEmployees = createAsyncThunk(
   "employee/deleteEmployees",
-  async (id, { rejectWithValue }) => {
+  async (id, { rejectWithValue, dispatch }) => {
     try {
       const response = await api.delete(`api/v1/employee/${id}`);
+      dispatch(getEmployees);
       return response.data;
     } catch (error) {
       if (error.response) {
         return rejectWithValue(
           error.response.statusText || "Failed to delete employee",
+        );
+      }
+      return rejectWithValue("Network error. Please check your connection.");
+    }
+  },
+);
+
+export const updateEmployee = createAsyncThunk(
+  "employee/updateEmployee",
+  async ({ id, details }, { rejectWithValue, dispatch }) => {
+    try {
+      const response = await api.put(`api/v1/employee/${id}`, details);
+      dispatch(getEmployees());
+      return response.data;
+    } catch (error) {
+      if (error.response) {
+        return rejectWithValue(
+          error.response.statusText || "Failed to update employee",
         );
       }
       return rejectWithValue("Network error. Please check your connection.");

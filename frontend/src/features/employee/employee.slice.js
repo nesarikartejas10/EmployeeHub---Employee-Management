@@ -1,5 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteEmployees, getEmployees, postEmployees } from "./employee.thunk";
+import {
+  deleteEmployees,
+  getEmployees,
+  postEmployees,
+  updateEmployee,
+} from "./employee.thunk";
 
 const initialState = {
   employees: [],
@@ -28,7 +33,7 @@ const employeeSlice = createSlice({
       state.error = action.payload || action.error.message;
     });
 
-    //post employees
+    //post employee
     builder.addCase(postEmployees.pending, (state, action) => {
       state.loading = true;
       state.error = null;
@@ -44,7 +49,7 @@ const employeeSlice = createSlice({
       state.error = action.payload || action.error.message;
     });
 
-    //delete employees
+    //delete employee
     builder.addCase(deleteEmployees.pending, (state, action) => {
       state.loading = true;
       state.error = null;
@@ -59,6 +64,28 @@ const employeeSlice = createSlice({
     });
 
     builder.addCase(deleteEmployees.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload || action.error.message;
+    });
+
+    //update employee
+    builder.addCase(updateEmployee.pending, (state, action) => {
+      state.loading = true;
+      state.error = null;
+    });
+
+    builder.addCase(updateEmployee.fulfilled, (state, action) => {
+      state.loading = false;
+      state.employees = state.employees.map((employee) => {
+        if (employee.id === action.payload.id) {
+          return { ...action.payload };
+        } else {
+          return employee;
+        }
+      });
+    });
+
+    builder.addCase(updateEmployee.rejected, (state, action) => {
       state.loading = false;
       state.error = action.payload || action.error.message;
     });

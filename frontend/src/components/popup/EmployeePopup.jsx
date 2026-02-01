@@ -1,7 +1,10 @@
 import { useDispatch, useSelector } from "react-redux";
 import { closeEmployeePopup } from "../../features/popup/popup.slice";
 import { useEffect, useState } from "react";
-import { postEmployees } from "../../features/employee/employee.thunk";
+import {
+  postEmployees,
+  updateEmployee,
+} from "../../features/employee/employee.thunk";
 
 const EmployeePopup = () => {
   const [formDetails, setFormDetails] = useState({
@@ -13,7 +16,7 @@ const EmployeePopup = () => {
   });
 
   const popup = useSelector((state) => state.popup.employeePopup);
-  console.log(popup);
+
   const dispatch = useDispatch();
 
   const handleInputChange = (e) => {
@@ -23,8 +26,32 @@ const EmployeePopup = () => {
     });
   };
 
+  useEffect(() => {
+    if (!popup) {
+      setFormDetails({
+        profileURL: "",
+        name: "",
+        email: "",
+        bio: "",
+        isHighlight: false,
+      });
+    } else if (popup?.id) {
+      setFormDetails({
+        profileURL: popup.profileURL,
+        name: popup.name,
+        email: popup.email,
+        bio: popup.bio,
+        isHighlight: false,
+      });
+    }
+  }, [popup]);
+
   const handleSubmit = () => {
-    dispatch(postEmployees(formDetails));
+    if (popup.id) {
+      dispatch(updateEmployee({ id: popup.id, details: formDetails }));
+    } else {
+      dispatch(postEmployees(formDetails));
+    }
 
     dispatch(closeEmployeePopup());
   };
@@ -81,7 +108,7 @@ const EmployeePopup = () => {
         ></textarea>
 
         <button onClick={handleSubmit} className="btn btn-neutral mt-4">
-          Login
+          {popup.id ? "Update Employee" : "Add Employee"}
         </button>
       </fieldset>
     </section>
